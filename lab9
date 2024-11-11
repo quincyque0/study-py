@@ -1,0 +1,293 @@
+import random
+import numpy 
+import string
+
+#task 1
+def func(x):
+ return x**2 / (10 + x**3)
+def task1proverka():
+  a =-2
+  b = 5
+  n = 10000
+  h = (b- a) / n
+  f = []
+  i = a
+  while i < b:
+      f.append(func(i))
+      i += h
+  sum = 0
+  for i in f:
+      sum += h * i
+  print(f"{sum:.2f}")
+
+
+def trapezium_method(func, a, b, n):
+  h = (b - a) / n
+  sum = (func(a) + func(b)) / 2
+  for i in range(1, n):
+    sum += func(a + i * h)
+  return h * sum
+def task1():
+  a = -2
+  b = 5
+  n = 100
+
+  integral = trapezium_method(func, a, b, n)
+  print(f"Интеграл методом трапеций: {integral:.2f}")
+  print(trapezium_method(func,-2,5,10000))
+
+
+
+
+
+
+def generatemagicsquare(n):
+  if n % 2 == 0:
+    raise ValueError("Размер магического квадрата должен быть неченым")
+  magic_square = numpy.zeros((n,n))
+  ряд = n // 2
+  столб = n - 1
+  numbers = list(range(1, n * n + 1))
+  random.shuffle(numbers)
+  for num in numbers:
+    if magic_square[ряд][столб] == 0:
+      magic_square[ряд][столб] = num
+    сряд = (ряд - 1 + n) % n
+    сстолб = (столб + 1) % n
+    if magic_square[сряд][сстолб] != 0:
+      ряд = (ряд + 1) % n
+    else:
+      ряд = сряд
+      столб = сстолб
+
+  return magic_square
+
+
+
+def magicube(mat):
+    flag = 0
+    for i in (range(len(mat))):
+        if( mat[i][0] + mat[i][1] + mat[i][2] != mat[0][i] + mat[1][i] + mat[2][i] or mat[0][0]+ mat[1][1]+mat[2][2] != mat[0][2]+ mat[1][1]+mat[2][0] or mat[i][0] + mat[i][1] + mat[i][2] !=mat[0][0]+ mat[1][1]+mat[2][2] or mat[0][0]+ mat[1][1]+mat[2][2]!= mat[0][i] + mat[1][i] + mat[2][i]):
+            flag +=1
+
+    if flag != 0 : return False
+    else:return True
+
+    
+        
+def task2():
+  a = generatemagicsquare(3)
+  while(magicube(a))!=True:
+    a = generatemagicsquare(3)
+  for i in range(len(a)):
+      print()
+      for j in range(len(a)):
+         print(a[i][j],end=" ")
+
+
+def task3():
+  num = int(input("enter number of treasures"))
+  map =[]
+  for i in range(num):
+    map.append([random.randrange(100),random.randrange(100)])
+  locationx = int(input("enter your coordinate x"))
+  locationz = int(input("enter your coordinate z"))
+  tmp = [[1000000,1000000]]
+  for i in range(len(map)):
+    if tmp[-1][0] + tmp[-1][1] > map[i][0]+map[i][1]-locationx-locationz:
+      tmp.append([map[i][0],map[i][1]])
+  print(tmp[-1])
+  print(map)
+
+
+def task4():
+  flag = 0
+  menu = [
+    ["Пицца Маргарита", ["мука", "томаты", "сыр", "базилик"], 10],
+    ["Салат Цезарь", ["салат", "курица", "сыр", "сухарики"], 8],
+    ["Суп Томатный", ["томаты", "лук", "морковь", "картофель"], 6]
+    ]
+  while flag == 0:
+    n = int(input("0 - отмена ,1 - отобразить меню, 2 - найти блюдо по названию, 3 - добавить новое блюдо, 4 - новая цена\n"))
+    match n:
+      case 1:
+        for i in menu:
+          print(i)
+      case 2:
+        dish = input("введите то что ищите\n")
+        for i in menu:
+          if dish in i:
+            print(i)
+      case 3:
+        dish = input("введите название\n")
+        count = int(input("введите кол-в инградиентов\n"))
+        componetnts = []
+        for i in range(count):
+          s = input(f"копонент {i}\n")
+          componetnts.append(s)
+        price = input("enter price\n")
+        menu.append([dish,componetnts,price])
+      case 4:
+        number = int(input("номер блюда\n"))
+        try:
+          print(f"старая цена {menu[number-1][2]}")
+        except IndexError:
+          print("такого блюда нет")
+        s = int(input("новая цена\n"))
+        print(f"{menu[number-1][2]} изменино на {s} ")
+        menu[number-1][2] = s
+      case 0:
+        flag = 1
+def task5():
+  n = int(input("n\n"))
+  m = int(input("m\n"))
+  mat = numpy.zeros((n,m))
+  tmat = numpy.zeros((m,n))
+  for i in range(n):
+    for j in range(m):
+      mat[i][j] = random.randrange(100)
+  for i in range(n):
+    print()
+    for j in range(m):
+      print(mat[i][j],end = " ")
+  print()
+  print()
+  for i in range(n):
+    for j in range(m):
+      tmat[j][i] = mat[i][j]
+  for i in range(m):
+    print()
+    for j in range(n):
+      print(tmat[i][j],end = " ")
+
+
+def task6():
+  n = int(input("n"))
+  matrix = numpy.zeros((n,n))
+  matrix2 = numpy.zeros((n,n))
+  for i in range(n):
+    for j in range(n):
+      matrix[i][j]= random.randrange(100)
+  for i in range(n):
+    print()
+    for j in range(n):
+      print(matrix[i][j],end = " ")
+  print()
+  print()
+  for i in range(n):
+    for j in range(n):
+      matrix2[i][j] = matrix[i][j]
+  for i in range(n):
+    matrix2[i][i] = matrix[-i-1][i]
+    matrix2[i][-i-1] = matrix[-1-i][-1-i]
+  for i in range(n):
+     print()
+     for j in range(n):
+       print(matrix2[i][j],end = " ")
+
+def task7():
+  n = int(input("n"))
+  m = int(input("m"))
+  zal = numpy.zeros((n,m))
+  for i in range(n):
+    for j in range(m):
+      zal[i][j] = random.randrange(2)
+  for i in range(n):
+    print()
+    for j in range(m):
+      print(zal[i][j],end = " ")
+  s = []
+  k = int(input("размер группировки, целью которой является просмотр фильма)"))
+  for i in range(n):
+    count = 0
+    for j in range(m):
+      if zal[i][j] == 0:
+        count+=1
+      else:
+        count = 0
+      if count >= k:
+        s.append(i)
+  if s:
+    print(f"ряд номер {s[0]+1}")
+  else:
+    print("0 нету мест")
+
+def task8():
+  n = int(input("n"))
+  m = int(input("m"))
+  A = numpy.zeros((n,m))
+  for i in range(n):
+    for j in range(m):
+      A[0][j] = 1 
+      A[i][0] = 1
+  for i in range(1,n):
+    for j in range(1,m):
+      A[i][j] = A[i-1][j] + A[i][j-1]
+  
+  for i in range(n):
+    print()
+    for j in range(m):
+      print(A[i][j],end = " ")
+        
+def task9():
+  polev = []
+  for i in range(4):
+    polev.append(["*","*","*","*"])
+
+  pole = numpy.zeros((4,4))
+  ships = 4
+  kills = 0
+  bomb = 1
+  while ships ==4:
+    for i in range(len(pole)):
+      for j in range(len(pole)):
+        if pole[i][j] != 1  and pole[i][j]!=2 and random.randrange(4) == 1:
+          pole[i][j] = 1
+          ships -=1
+  while bomb ==1:
+    for i in range(len(pole)):
+      for j in range(len(pole)):
+        if pole[i][j] != 1 and random.randrange(10) == 1:
+          pole[i][j] = 2
+          bomb -=1
+  while kills != 4:
+    for i in range(4):
+      print()
+      for j in range(4):
+        print(polev[i][j],end = " ")
+    print()
+    x = int(input("строка\n"))
+    y = int(input("столбец\n"))
+    if pole[x-1][y-1] == 1:
+      polev[x-1][y-1] = "X"
+    elif pole[x-1][y-1] == 2:
+      print("проигрыш")
+      break
+  if kills == 4:
+    print("победа")
+
+
+
+
+a = int(input("номер задания \n"))
+match(a):
+  case 1:
+    task1proverka()
+    task1()
+  case 2:
+    task2()
+  case 3:
+    task3()
+  case 4:
+    task4()
+  case 5:
+    task5()
+  case 6:
+    task6()
+  case 7:
+    task7()
+  case 8:
+    task8()
+  case 9:
+    task9()
+  
